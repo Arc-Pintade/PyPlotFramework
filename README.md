@@ -21,9 +21,28 @@ NB: Caution, you need to have ROOT-CERN lirbary on your computer. And the rooten
 need to be update (if needed) in function of your own ROOT installation path.
 
 
+# Presentation of the framework 
 
+This PyPlotFramework, is built in 2 part: 
 
-# Comparaison Data/Monte-Carlo : 
+  -> Build histograms from Heppy output rootfile, with reweight for MC samples and 
+  triggers for Data. 
+
+  These histograms are stored in :
+
+    ./results/"year"/TH1
+
+  -> Creation of combine input rootfile, comparaison data/mc plots, ...
+
+  These results are stored in :
+
+    ./results/"year"/combine
+    ./results/"year"/stack
+    ...
+
+# Comparaison Data/Monte-Carlo
+
+Data/mc comparaison are created for a given observable
 
     python ./bin/comparaison_data_mc.py "observable" "year" "title"
 
@@ -32,6 +51,8 @@ example :
     python ./bin/comparaison_data_mc.py m_dilep 2017 "Mass dileptonic"
 
 # Combine input file creation 
+
+Data/mc comparaison are created for a given observable
 
     python ./bin/combine.py "observable" "year" 
 

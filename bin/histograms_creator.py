@@ -8,7 +8,7 @@ year = '2017'
 # Generate pure TH1 without fancy style 
 ################################################################################
 
-'''
+
 #MC
 print 'Start Monte Carlo'
 
@@ -30,7 +30,7 @@ for i in range(len(sample_list['DATA'][year])):
 
 print ''
 
-'''
+
 
 
 #SYST
