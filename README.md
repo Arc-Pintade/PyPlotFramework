@@ -14,10 +14,14 @@ In your terminal type following commands :
 
 In the pyplotframework directory :
 
+    > bash install.sh
     > source rootenv
 
 NB: Caution, you need to have ROOT-CERN lirbary on your computer. And the rootenv 
 need to be update (if needed) in function of your own ROOT installation path.
+
+
+
 
 # Comparaison Data/Monte-Carlo : 
 
