@@ -1,2 +1,5 @@
-inputs/
-results/
+*.root
+*.png
+*.pdf
+*.txt
+*.pck
