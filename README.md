@@ -4,12 +4,20 @@
 This framework is plotter based on pyROOT-CERN library. It was build for ttbar analysis.
 PyPlotFramework is optimized for the CMS HEPPY output.
 
+This framework is built with python2.7 !
+
 # Installation :
 
 In your terminal type following commands : 
 
     > git clone https://github.com/Arc-Pintade/PyPlotFramework.git
-    > bash install.sh
+
+In the pyplotframework directory :
+
+    > source rootenv
+
+NB: Caution, you need to have ROOT-CERN lirbary on your computer. And the rootenv 
+need to be update (if needed) in function of your own ROOT installation path.
 
 # Comparaison Data/Monte-Carlo : 
 
