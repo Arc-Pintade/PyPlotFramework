@@ -40,6 +40,12 @@ This PyPlotFramework, is built in 2 part:
     ./results/"year"/stack
     ...
 
+# Generate histograms, reweighted and triggered
+
+    python ./bin/histograms_creator.py
+
+NB: Caution it can be long ... (around 6 minutes)
+
 # Comparaison Data/Monte-Carlo
 
 Data/mc comparaison are created for a given observable
