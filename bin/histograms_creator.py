@@ -2,13 +2,13 @@ import sys
 sys.path.append('./')
 from tools.generator_manager import *
 
-year = '2017'
+year = '2016'
 
 ################################################################################
 # Generate pure TH1 without fancy style 
 ################################################################################
 
-
+'''
 #MC
 print 'Start Monte Carlo'
 
@@ -18,7 +18,7 @@ for i in range(len(sample_list['MC'][year])):
 
 print ''
 
-
+'''
 
 
 # DATA
@@ -31,7 +31,7 @@ for i in range(len(sample_list['DATA'][year])):
 print ''
 
 
-
+'''
 
 #SYST
 print 'Start Systematics'
@@ -43,3 +43,4 @@ for i in range(len(sample_list['MC'][year])):
     print '----'
 
 print ''
+'''

@@ -4,11 +4,15 @@
 # Sample utilities
 ################################################################################
 
-number_of_signal_samples_2017 = 2
+number_of_signal_samples_2017 = 3
+
 
 def succeeds_job(percent):
     return 100./(percent)
 
+
+
+events_N0_2017 = []
 
 cross_sec_2017 = [ 
     88.2,     # dilep       a
@@ -71,19 +75,19 @@ effective_data_event_2017 = [
 
 #AN 2019/228
 
-elecmu_trig = [
+elecmu_trig_2017 = [
     'trg_muon_electron_mu8ele23DZ_fired',
     'trg_muon_electron_mu12ele23DZ_fired',
     'trg_muon_electron_mu23ele12DZ_fired',
     'trg_muon_electron_mu23ele12_fired'
 ]
 
-mu_trig = [
+mu_trig_2017 = [
     'trg_muon_mu27_fired',
     'trg_muon_mu24eta21_fired'
 ]
 
-elec_trig = [
+elec_trig_2017 = [
     'trg_electron_ele35_fired',
 #    'trg_electron_ele38_fired',
 #    'trg_electron_ele40_fired',

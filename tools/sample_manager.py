@@ -22,11 +22,31 @@ sample_list_DATA = {
 #    '2018' : sample_list_DATA_2018
 }
 
+elecmu_trig =  {
+    '2016' : elecmu_trig_2016,
+    '2017' : elecmu_trig_2017,
+#    '2018' : elecmu_trig_2018
+}
+
+mu_trig = {
+    '2016' : mu_trig_2016,
+    '2017' : mu_trig_2017,
+#    '2018' : mu_trig_2018
+}
+
+elec_trig = {
+    '2016' : elec_trig_2016,
+    '2017' : elec_trig_2017,
+#    '2018' : elec_trig_2018
+}
+
+
 # To call sample_list do sample_list[nature][year]
 sample_list = {
     'MC'   : sample_list_MC,
     'DATA' : sample_list_DATA
 }
+
 
 
 ################################################################################
@@ -59,15 +79,15 @@ def percent(x, total):
 # Variables
 ################################################################################
 
-events_N0_2016 = []
-for i in range(len(cross_sec_2016)):
-    events_N0_2016.append(sum_of_weight('2016',sample_list['MC']['2016'][i])
-                          *effective_mc_event_2016[i])
-
-events_N0_2017 = []
-for i in range(len(cross_sec_2017)):
-    events_N0_2017.append(sum_of_weight('2017',sample_list['MC']['2017'][i])
-                          *effective_mc_event_2017[i])
+#events_N0_2016 = []
+#for i in range(len(cross_sec_2016)):
+#    events_N0_2016.append(sum_of_weight('2016',sample_list['MC']['2016']#[i])
+#                          *effective_mc_event_2016[i])
+#
+#events_N0_2017 = []
+#for i in range(len(cross_sec_2017)):
+#    events_N0_2017.append(sum_of_weight('2017',sample_list['MC']['2017']#[i])
+#                          *effective_mc_event_2017[i])
 
 effective_data_event = {
     '2016' : effective_data_event_2016,
@@ -88,7 +108,7 @@ luminosity = {
 }
 
 cross_sec = {
-    '2016' : cross_sec_2017,
+    '2016' : cross_sec_2016,
     '2017' : cross_sec_2017,
     '2018' : 0
 }

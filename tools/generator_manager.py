@@ -36,15 +36,15 @@ def trigger_passed(tree, trigger_list):
         return True
     return False
 
-def generate_trigger(tree, hist, variable, file_name):
-    if(trigger_passed(tree, elecmu_trig)):
+def generate_trigger(year, tree, hist, variable, file_name):
+    if(trigger_passed(tree, elecmu_trig[year])):
         if (file_name.find('MuonEG')!=-1):
             hist.Fill(tree.GetLeaf(variable).GetValue())
         return
-    if(trigger_passed(tree, mu_trig) and file_name.find('SingleMuon')!=-1):
+    if(trigger_passed(tree, mu_trig[year]) and file_name.find('SingleMuon')!=-1):
         hist.Fill(tree.GetLeaf(variable).GetValue())
         return
-    if(trigger_passed(tree, elec_trig) and file_name.find('SingleElectron')!=-1):
+    if(trigger_passed(tree, elec_trig[year]) and file_name.find('SingleElectron')!=-1):
         hist.Fill(tree.GetLeaf(variable).GetValue())
         return
     return
@@ -58,6 +58,11 @@ def generate_syst(tree, systematic_name, up_down):
         return 1-foo
     else:
         print 'up_down error'
+
+def write(hist, variable, year, nature, sample):
+    newfile = TFile(file_inout('results', year, 'TH1', nature , sample+'_'+variable+'.root'), 'RECREATE')
+    hist.Write()
+    newfile.Close()
 
 ################################################################################
 ################################################################################
@@ -84,14 +89,13 @@ def generate_TH1(variable, n_bin, bin_min, bin_max,
     elif(nature == 'DATA'):
         for i in range(tree.GetEntriesFast()):
             tree.GetEntry(i)
-            generate_trigger(tree, hist, variable, sample)
+            generate_trigger(year, tree, hist, variable, sample)
         hist.Scale(effective_data_event[year][index(year,sample,'DATA')])
 
     ########################
-    newfile = TFile(file_inout('results', year, 'TH1', nature , sample+'_'+variable+'.root'), 'RECREATE')
-    hist.Write()
-    newfile.Close()
+    write(hist, variable, year, nature, sample)
     rfile.Close()
+
 
 def generate_TH1_systematic(variable, n_bin, bin_min, bin_max, year, systematic_name, up_down, sample):
     rfile = TFile(heppy_tree(year, 'MC', sample))
