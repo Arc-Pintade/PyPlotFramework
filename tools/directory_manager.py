@@ -19,3 +19,6 @@ def heppy_tree(year, nature, sample):
 
 def eventfilter_input(year, nature, sample, filter):
     return './inputs/'+year+'/'+nature+'/'+sample+'/0000/'+sample+'/'+filter+'/SkimReport.txt'
+
+def efficiency_input(year, nature, sample, filter):
+    return './inputs/'+year+'/'+nature+'/'+sample+'/0000/'+sample+'/'+filter+'/efficiency.txt'

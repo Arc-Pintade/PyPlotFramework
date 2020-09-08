@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# $1 is your sample directory (MC or DATA) 
+# $2 is year
+
+PATH_LYOSERV=/home/cms/acarle/ttbarAnalysis/CMSSW_9_4_11_cand1/src/CMGTools/TTbarTime/
+PATH_ROOTFILES=transfert/
+PATH_STATUS=cfgPython/crab/status/
+PATH_LOCAL=./inputs/$2/
+TXT_STATUS=status.txt
+
+# rootfiles
+scp -r acarle@lyoserv.in2p3.fr:$PATH_LYOSERV$PATH_ROOTFILES$1"/"* $PATH_LOCAL$1
+
+# status
+scp acarle@lyoserv.in2p3.fr:$PATH_LYOSERV$PATH_STATUS$TXT_STATUS $PATH_LOCAL$1$TXT_STATUS

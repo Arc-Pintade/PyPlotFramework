@@ -22,6 +22,12 @@ sample_list_DATA = {
 #    '2018' : sample_list_DATA_2018
 }
 
+triggers = {
+    '2016' : 48,
+    '2017' : trig_2017,
+#    '2018' : trig_2018
+}
+
 elecmu_trig =  {
     '2016' : elecmu_trig_2016,
     '2017' : elecmu_trig_2017,
@@ -92,6 +98,12 @@ def percent(x, total):
 effective_data_event = {
     '2016' : effective_data_event_2016,
     '2017' : effective_data_event_2017,
+    '2018' : 35.9,
+}
+
+effective_mc_event = {
+    '2016' : effective_mc_event_2016,
+    '2017' : effective_mc_event_2017,
     '2018' : 35.9,
 }
 
