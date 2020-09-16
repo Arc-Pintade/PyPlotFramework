@@ -23,7 +23,7 @@ sample_list_DATA = {
 }
 
 triggers = {
-    '2016' : 48,
+    '2016' : trig_2016,
     '2017' : trig_2017,
 #    '2018' : trig_2018
 }
