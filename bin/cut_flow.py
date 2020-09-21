@@ -33,13 +33,34 @@ def cut_flow_human_readable(filter, year):
         filter_h.append() #signal
         #filter_h.append(filter[13]+filter[14]) #Zjets
     elif(year == '2017'):
-        filter_h.append(filter[0]+filter[1]) #signal
-        filter_h.append(filter[2]+filter[3]+filter[4]+filter[5]
-                       +filter[6]+filter[7]+filter[8]+filter[9]) #TTX
-        filter_h.append(filter[10]+filter[11]+filter[12]+filter[13]+filter[14]) #ST
-        filter_h.append(filter[15]+filter[16]) #diboson
-        filter_h.append(filter[17]+filter[18]) #Wjets
-        filter_h.append(filter[19]) #Zjets
+        filter_h.append(filter[0]
+                       +filter[1]
+                       +filter[2]) #signal
+        filter_h.append(filter[3]
+                       +filter[4]
+                       +filter[5]
+                       +filter[6]
+                       +filter[7]
+                       +filter[8]
+                       +filter[9]
+                       +filter[10]) #TTX
+        filter_h.append(#filter[11]
+                       filter[11]
+                       +filter[12]
+                       +filter[13]
+                       #+filter[15]
+                       +filter[14]
+                       +filter[15]
+                       +filter[16]) #ST
+        filter_h.append(#filter[19]
+                       filter[18]
+                       +filter[19]) #diboson
+        filter_h.append(filter[20]
+                       +filter[21]) #Wjets
+        filter_h.append(#filter[24]
+                       filter[22]
+                       #+filter[26]
+                       ) #Zjets
     return filter_h
 
 
@@ -71,6 +92,7 @@ for i in range(len(sample_list['MC'][year])):
     rootfile.append(TFile(results_path(year,'TH1/MC',namefile)))
     foo = rootfile[i].Get('m_dilep')
     integrals.append(foo.Integral())
+    print i,integrals[i]
 del rootfile
 
 
