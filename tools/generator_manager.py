@@ -14,6 +14,7 @@ def generate_weight(tree):
     foo = 1.
     foo *= tree.GetLeaf('weight_pu').GetValue()
     foo *= tree.GetLeaf('weight_generator').GetValue()
+    foo *= tree.GetLeaf('weight_top').GetValue()
     #lepton
     foo *= tree.GetLeaf('weight_sfe_id').GetValue()
     foo *= tree.GetLeaf('weight_sfe_reco').GetValue()

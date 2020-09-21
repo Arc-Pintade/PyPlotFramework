@@ -42,7 +42,11 @@ This PyPlotFramework, is built in 2 part:
 
 # Generate histograms, reweighted and triggered
 
-    python ./bin/histograms_creator.py
+    python ./bin/histograms_creator.py "year" "nature"
+
+example : 
+
+    python ./bin/histograms_creator.py 2016 DATA
 
 NB: Caution it can be long ... (around 6 minutes)
 
