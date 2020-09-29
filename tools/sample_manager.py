@@ -53,7 +53,14 @@ sample_list = {
     'DATA' : sample_list_DATA
 }
 
-
+ttbar_list = [ 
+    'signal',
+    'ttx',
+    'singletop'
+    'dibosons',
+    'wjets',
+    'zjets'
+]
 
 ################################################################################
 # Utils

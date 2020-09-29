@@ -37,9 +37,9 @@ events_N0_2017 = [
 1925931.0,     # ZZ          v
 58536004.0,     # WJets       w  33043732.0 + 25492272.0
 58536004.0,     # Wjets2      x
-      # DY          y
-3.00944505434e+12,     # DY2         z
-     # DY 10-50     zz
+3498589972354.0,      # DY          y  4.89144918014e+11 + 3.00944505434e+12
+3498589972354.0,     # DY2         z
+11599648.0     # DY 10-50     zz
 ]
 
 cross_sec_2017 = [ 
@@ -67,9 +67,9 @@ cross_sec_2017 = [
     16.523,   # ZZ          v
     0.4062,   # WJets       w
     0.4062,   # Wjets2      x
-#    6225.4,   # DY          y
+    6225.4,   # DY          y
     6225.4,   # DY2         z
-#    22635.1  # DY 10-50     zz
+    22635.1  # DY 10-50     zz
 ]
 
 effective_mc_event_2017 = [
@@ -97,9 +97,9 @@ effective_mc_event_2017 = [
     succeeds_job(100.),   # ZZ          v
     succeeds_job(100.),   # WJets       w
     succeeds_job(59.1),   # Wjets2      x
-#    succeeds_job(100.),   # DY          y
+    succeeds_job(100.),   # DY          y
     succeeds_job(91.7),   # DY2         z
-#    succeeds_job(100.),  # DY 10-50     zz
+    succeeds_job(31.2   ),  # DY 10-50     zz
 ]
 
 effective_data_event_2017 = [

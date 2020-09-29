@@ -1,0 +1,3 @@
+#!/bin/bash
+
+g++ ./cpp/generator.cpp -o test `root-config --cflags --glibs` 
