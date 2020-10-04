@@ -2,6 +2,7 @@ import sys
 sys.path.append('./')
 from tools.generator_manager import *
 
+import numpy as np
 import argparse
 
 parser = argparse.ArgumentParser()
@@ -13,6 +14,12 @@ year = args.year
 
 
 ################################################################################
+
+def total_list(list):
+    foo = 0
+    for l in list:
+        foo += l
+    return foo
 
 def event_filtered(file, is_after = True):
     event = []
@@ -50,19 +57,55 @@ def cut_flow_human_readable(filter, year):
                        +filter[13]
                        #+filter[15]
                        +filter[14]
-                       +filter[15]
-                       +filter[16]) #ST
+                       #+filter[15]
+                       +filter[15]) #ST
         filter_h.append(#filter[19]
-                       filter[18]
-                       +filter[19]) #diboson
+                       filter[16]
+                       +filter[17]) #diboson
+        filter_h.append(filter[18]
+                       +filter[19]) #Wjets
         filter_h.append(filter[20]
-                       +filter[21]) #Wjets
-        filter_h.append(#filter[24]
-                       filter[22]
-                       #+filter[26]
+                       +filter[21]
+                       +filter[22]
                        ) #Zjets
     return filter_h
 
+def latex_table(name, filter1, filter2, filter3, filter4):
+    foo = r'''
+    \begin{tabular}{|c|c|c|c|c|}\hline
+     channel & no cuts & 2 leptons & 2 jets & 1 b-jets \\ \hline \hline
+    '''
+    for i in range(len(name)):
+        foo += '    '+name[i].replace('_',' ')+' & '\
+            +str(round(filter1[i]))+'$\pm$'+str(round(np.sqrt(filter1[i])))+\
+            ' ['+str(percent(filter1[i],total_list(filter1)))+'\%] & '\
+            +str(round(filter2[i]))+'$\pm$'+str(round(np.sqrt(filter2[i])))+\
+            ' ['+str(percent(filter2[i],total_list(filter2)))+'\%] & '\
+            +str(round(filter3[i]))+'$\pm$'+str(round(np.sqrt(filter3[i])))+\
+            ' ['+str(percent(filter3[i],total_list(filter3)))+'\%] &'\
+            +str(round(filter4[i]))+'$\pm$'+str(round(np.sqrt(filter4[i])))+\
+            ' ['+str(percent(filter4[i],total_list(filter4)))+'\%]  '\
+            +'  \\\\ \n    '
+        if(i==0):
+            foo += '\hline \n    '
+    foo += '\hline \n    '
+    foo += 'total MC & '+str(round(total_list(filter1)))\
+            +'$\pm$'+str(round(np.sqrt(total_list(filter1))))\
+            +' & '+str(round(total_list(filter2)))\
+            +'$\pm$'+str(round(np.sqrt(total_list(filter2))))\
+            +' & '+str(round(total_list(filter3))) \
+            +'$\pm$'+str(round(np.sqrt(total_list(filter3))))\
+            +' & '+str(round(total_list(filter4))) \
+            +'$\pm$'+str(round(np.sqrt(total_list(filter4))))\
+            +'\\\\ \n '
+    foo += 'total data & '\
+            +' & '\
+            +' & '\
+            +' & XXXX \\\\ \n'\
+            +'\hline'\
+            +' \n '
+    foo += r'''\end{tabular}'''
+    return foo
 
 ################################################################################
 
@@ -92,7 +135,6 @@ for i in range(len(sample_list['MC'][year])):
     rootfile.append(TFile(results_path(year,'TH1/MC',namefile)))
     foo = rootfile[i].Get('m_dilep')
     integrals.append(foo.Integral())
-    print i,integrals[i]
 del rootfile
 
 
@@ -116,13 +158,40 @@ to_two_jets = []
 to_one_bjets = []
 
 for i in range(len(full_h)):
+    print i,one_bjet_h[i]
     to_one_bjets.append(two_jets_h[i]/float(one_bjet_h[i]))
     to_two_jets.append(one_dilepton_h[i]/float(one_bjet_h[i]))
     to_one_dilep.append(full_h[i]/float(one_bjet_h[i]))
 
 for i in range(len(integrals_h)):
-    print name_channel_h[i]+' full > '+str(to_one_dilep[i]*integrals_h[i])
-    print name_channel_h[i]+' one dilep > '+str(to_two_jets[i]*integrals_h[i])
-    print name_channel_h[i]+' two jets > '+str(to_one_bjets[i]*integrals_h[i])
-    print name_channel_h[i]+' one bjets > '+str(integrals_h[i])
+    print name_channel_h[i]+' full > '+str(to_one_dilep[i]*integrals_h[i])+" +- "+str(np.sqrt(to_one_dilep[i]*integrals_h[i]))
+    print name_channel_h[i]+' one dilep > '+str(to_two_jets[i]*integrals_h[i])+" +- "+str(np.sqrt(to_two_jets[i]*integrals_h[i]))
+    print name_channel_h[i]+' two jets > '+str(to_one_bjets[i]*integrals_h[i])+" +- "+str(np.sqrt(to_one_bjets[i]*integrals_h[i]))
+    print name_channel_h[i]+' one bjets > '+str(integrals_h[i])+" +- "+str(np.sqrt(integrals_h[i]))
     print '---'
+
+latex_full = []
+latex_one_dilep = []
+latex_two_jets = []
+latex_one_bjet = []
+for i in range(len(integrals_h)):
+    latex_full.append(to_one_dilep[i]*integrals_h[i])
+    latex_one_dilep.append(to_two_jets[i]*integrals_h[i])
+    latex_two_jets.append(to_one_bjets[i]*integrals_h[i])
+    latex_one_bjet.append(integrals_h[i])
+
+## Latex part
+
+header = r'''\documentclass{standalone}
+\begin{document}
+'''
+main =  latex_table(name_channel_h, latex_full, latex_one_dilep, latex_two_jets, latex_one_bjet)
+footer = r'''
+\end{document}
+''' 
+
+content = header+main+footer
+
+with open('./results/cutflow/cutflow'+year+'.tex','w') as f:
+    f.write(content)
+

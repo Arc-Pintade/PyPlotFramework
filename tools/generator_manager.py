@@ -51,6 +51,21 @@ def generate_trigger(year, tree, hist, variable, file_name):
                     return
     return
 
+def read_DATA_variable(year, tree, variable, file_name):
+    number = 0
+    if(trigger_passed(tree, triggers[year])):
+        if (file_name.find('MuonEG')!=-1):
+            number = tree.GetLeaf(variable).GetValue()
+            return number
+            if (file_name.find('SingleMuon')!=-1):
+                number = tree.GetLeaf(variable).GetValue()
+                return number
+                if (file_name.find('SingleElectron')!=-1):
+                    number = tree.GetLeaf(variable).GetValue()
+                    return number
+    return number
+
+
 # for syst
 def generate_syst(tree, systematic_name, up_down):
     foo = tree.GetLeaf(systematic_name).GetValue()
