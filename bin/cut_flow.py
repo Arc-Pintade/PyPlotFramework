@@ -37,7 +37,34 @@ def event_filtered(file, is_after = True):
 def cut_flow_human_readable(filter, year):
     filter_h = []
     if(year == '2016'):
-        filter_h.append() #signal
+        filter_h.append(filter[0]
+                       +filter[1]
+                       +filter[2]) #signal
+        filter_h.append(filter[3]
+                       +filter[4]
+                       +filter[5]
+                       +filter[6]
+                       +filter[7]
+                       +filter[8]
+                       +filter[9]) #TTX
+        filter_h.append(#filter[11]
+                       filter[10]
+                       +filter[11]
+                       +filter[12]
+                       #+filter[15]
+                       +filter[13]
+                       #+filter[15]
+                       +filter[14]) #ST
+        filter_h.append(#filter[19]
+                       filter[15]
+                       +filter[16]
+                       +filter[17]
+                       +filter[18]
+                       +filter[19]
+                       +filter[20]) #diboson
+        filter_h.append(filter[21]
+                       +filter[22]) #Wjets
+
         #filter_h.append(filter[13]+filter[14]) #Zjets
     elif(year == '2017'):
         filter_h.append(filter[0]
@@ -144,7 +171,7 @@ name_channel_h = [
     'single top',
     'dibosons',
     'W$+$Jets',
-    'Z$+$Jets'
+#    'Z$+$Jets'
 ]
 
 integrals_h    = cut_flow_human_readable(integrals, year)
