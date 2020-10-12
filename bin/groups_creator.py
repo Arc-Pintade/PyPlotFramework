@@ -1,3 +1,6 @@
+import time
+t_start = time.clock()
+
 import sys
 sys.path.append('./')
 from tools.generator_manager import *
@@ -23,4 +26,9 @@ variables = [
 # Generate pure TH1 without fancy style 
 ################################################################################
 
-generate_MC_groups(20,0,250, year, variables, ttbar_list)
+generate_MC_groups(year, variables, ttbar_list)
+
+
+t_end = time.clock()
+
+print "elapsed time : ", (t_end - t_start)/60., "min"

@@ -165,12 +165,3 @@ trig_2016 = [
 ]
 
 SYST_PU = '0.046'
-
-systematic_list = [
-    'syst_elec_reco',
-    'syst_elec_id',
-    'syst_muon_id',
-    'syst_muon_iso',
-    'syst_em_trig',
-    'syst_pu'
-]

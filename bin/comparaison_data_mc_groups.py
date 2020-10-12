@@ -32,49 +32,52 @@ if(subtitle == ''):
         subtitle = '35.9 fb^{-1} (13TeV)'
     elif year=='2017':
         subtitle = '41.53 fb^{-1} (13TeV)'
-bin_values = observable_values(observable)[0]
+
+nbin = 0
+min_bin = 0
+max_bin = 0
 legend_coordinates = observable_values(observable)[1]
-
-withSystematics = False
-
 TH1.SetDefaultSumw2(1)
-hist_signal = TH1F("","", bin_values[0], bin_values[1], bin_values[2])
-hist_background = TH1F("","", bin_values[0], bin_values[1], bin_values[2])
-hist_data = TH1F("","", bin_values[0], bin_values[1], bin_values[2])
+mc_integral = 0
+data_integral = 0
 canvas = TCanvas('stack_'+observable,'stack_'+observable, 1000, 800)
-stack = THStack()
 
 ################################################################################
 ## Create Histo 
 ################################################################################
 
-mc_integral = 0
-data_integral = 0
 
 # mc_signal
-rootfile = []
-for i in range(number_of_signal_samples[year]):
-    namefile = sample_list['MC'][year][i]+'_'+observable+'.root'
-    rootfile.append(TFile(results_path(year,'TH1/MC',namefile)))
-    foo = rootfile[i].Get(observable)
-    mc_integral += foo.Integral()
-    hist_signal.Add(foo)
-    print(sample_list['MC'][year][i])
-del rootfile
+rootfile_signal = TFile(results_path(year,'groups/MC',"signal_"+observable+".root"))
+hist_signal = rootfile_signal.Get('signal_'+observable)
+mc_integral += hist_signal.Integral()
+
+# convenient variables
+nbin    = hist_signal.GetNbinsX()
+min_bin = hist_signal.GetXaxis().GetXmin()
+max_bin = hist_signal.GetXaxis().GetXmax()
+
+
 
 # mc_background
+hist_background = TH1F("","", nbin, min_bin, max_bin)
 rootfile = []
-for i in range(number_of_signal_samples[year], len(sample_list['MC'][year])):
-    namefile = sample_list['MC'][year][i]+'_'+observable+'.root'
-    rootfile.append(TFile(results_path(year,'TH1/MC',namefile)))
-    foo = rootfile[i-number_of_signal_samples[year]].Get(observable)
-    mc_integral += foo.Integral()
-    hist_background.Add(foo)
-    print(sample_list['MC'][year][i])
+i = 0
+for sample in sample_list_groups[year]:
+    hist_name = sample[:-5] # '.root' 5 char
+    if(sample.find('signal') == -1 and sample.find(observable) != -1):
+        print sample, hist_name
+        rootfile.append(TFile(results_path(year,'groups/MC',sample)))
+        foo = rootfile[i].Get(hist_name)
+        print foo.Integral()
+        mc_integral += foo.Integral()
+        hist_background.Add(foo)
+        i = i+1
 del rootfile
 
 
 # data
+hist_data = TH1F("","", nbin, min_bin, max_bin)
 rootfile = []
 for i in range(len(sample_list['DATA'][year])):
     namefile = sample_list['DATA'][year][i]+'_'+observable+'.root'
@@ -82,25 +85,25 @@ for i in range(len(sample_list['DATA'][year])):
     foo = rootfile[i].Get(observable)
     data_integral += foo.Integral()
     hist_data.Add(foo)
-    print(sample_list['DATA'][year][i])
 del rootfile
 
 
 ################################################################################
 ## Draw stuff
 ################################################################################
-
+'''
+hist_mc = TH1F("","", nbin, min_bin, max_bin)
+hist_mc.Add(hist_background)
+hist_mc.Add(hist_signal)
+#hist_mc.Draw("E HIST")
+hist_background.Draw("E SAME")
+hist_data.Draw("E SAME")
+'''
+stack = THStack()
 stack.Add(hist_background)
 stack.Add(hist_signal)
 stack.Draw("E HIST")
 hist_data.Draw("E SAME")
-
-################################################################################
-## Ratio DATA/MC
-################################################################################
-
-ratio_limit = 0.4
-ratio = TRatioPlot(stack, hist_data)
 
 ################################################################################
 ## Set Style
@@ -111,31 +114,15 @@ style_histo(hist_signal, 2, 1, 2, 3004, 0)
 style_histo(hist_background, 4, 1, 4, 3005, 0)
 style_histo(hist_data, 1, 1, 0, 3001, 1, 20)
 
-style_ratioplot(ratio, 'MC/DATA', ratio_limit)
-style_labels_counting(stack, 'Events', title)
-
-################################################################################
-## Legend stuff
-################################################################################
-
-p = ratio.GetUpperPad()
-legend = p.BuildLegend()
-legend.Clear()
-legend.SetHeader(subtitle, "C")
-legend.AddEntry(hist_signal, "t#bar{t} signal", "f")
-legend.AddEntry(hist_background, "non-t#bar{t}", "f")
-legend.AddEntry(hist_data, "data")
-legend_box(legend, legend_coordinates)
-
 ################################################################################
 ## Save
 ################################################################################
 
-newfile = TFile(results_path(year,'stack',observable+'.root'), 'RECREATE')
+newfile = TFile(results_path(year,'stack',observable+'_groups.root'), 'RECREATE')
 canvas.Update()
 canvas.Write()
 newfile.Close()
-canvas.SaveAs(results_path(year,'stack',observable+'.png'))
+canvas.SaveAs(results_path(year,'stack',observable+'_groups.png'))
 
 print ''
 print "Data : ", data_integral

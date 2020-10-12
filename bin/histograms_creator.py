@@ -21,7 +21,7 @@ nature = args.nature
 if nature == "MC":
     print 'Start Monte Carlo'
 
-    for i in range(2,len(sample_list['MC'][year])):
+    for i in range(len(sample_list['MC'][year])):
         '''
         generate_TH1('pt_lead',      50, 0, 250, year, 'MC', sample_list['MC'][year][0])
         generate_TH1('pt_sublead',   50, 0, 250, year, 'MC', sample_list['MC'][year][0])
