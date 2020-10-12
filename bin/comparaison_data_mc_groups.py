@@ -20,18 +20,21 @@ parser = argparse.ArgumentParser()
 parser.add_argument('observable', help='display your observable')
 parser.add_argument('year', help='year of samples')
 parser.add_argument('title', help='display your observable title')
+parser.add_argument('systematic',nargs='?', help='display your systematic', default='')
 parser.add_argument('subtitle',nargs='?', help='display your observable subtitle', default='')
 
 args = parser.parse_args()
 observable = args.observable
 year = args.year
 title = args.title
+systematic = args.systematic
 subtitle = args.subtitle
 if(subtitle == ''):
     if year=='2016':
         subtitle = '35.9 fb^{-1} (13TeV)'
     elif year=='2017':
         subtitle = '41.53 fb^{-1} (13TeV)'
+
 
 nbin = 0
 min_bin = 0
@@ -40,6 +43,8 @@ legend_coordinates = observable_values(observable)[1]
 TH1.SetDefaultSumw2(1)
 mc_integral = 0
 data_integral = 0
+syst_up_integral = 0
+syst_down_integral = 0
 canvas = TCanvas('stack_'+observable,'stack_'+observable, 1000, 800)
 
 ################################################################################
@@ -66,13 +71,11 @@ i = 0
 for sample in sample_list_groups[year]:
     hist_name = sample[:-5] # '.root' 5 char
     if(sample.find('signal') == -1 and sample.find(observable) != -1):
-        print sample, hist_name
         rootfile.append(TFile(results_path(year,'groups/MC',sample)))
         foo = rootfile[i].Get(hist_name)
-        print foo.Integral()
         mc_integral += foo.Integral()
         hist_background.Add(foo)
-        i = i+1
+        i += 1
 del rootfile
 
 
@@ -87,6 +90,29 @@ for i in range(len(sample_list['DATA'][year])):
     hist_data.Add(foo)
 del rootfile
 
+
+## systematics
+if(systematic != ''):
+    hist_systematics_up = TH1F("","", nbin, min_bin, max_bin)
+    hist_systematics_down = TH1F("","", nbin, min_bin, max_bin)
+
+    rootfile = []
+    for i, l in enumerate(ttbar_list):
+        name = l+ '_'+observable+'_'+systematic+'Up'
+        rootfile.append(TFile(results_path(year,'groups/SYST',name+'.root')))
+        foo = rootfile[i].Get(name)
+        syst_up_integral += foo.Integral()
+        hist_systematics_up.Add(foo)
+    del rootfile
+
+    rootfile = []
+    for i, l in enumerate(ttbar_list):
+        name = l+ '_'+observable+'_'+systematic+'Down'
+        rootfile.append(TFile(results_path(year,'groups/SYST',name+'.root')))
+        foo = rootfile[i].Get(name)
+        syst_down_integral += foo.Integral()
+        hist_systematics_down.Add(foo)
+    del rootfile
 
 ################################################################################
 ## Draw stuff
@@ -104,6 +130,10 @@ stack.Add(hist_background)
 stack.Add(hist_signal)
 stack.Draw("E HIST")
 hist_data.Draw("E SAME")
+if(systematic != ''):
+    hist_systematics_up.Draw(" SAME")
+    hist_systematics_down.Draw(" SAME")
+
 
 ################################################################################
 ## Set Style
@@ -113,21 +143,31 @@ hist_data.Draw("E SAME")
 style_histo(hist_signal, 2, 1, 2, 3004, 0)
 style_histo(hist_background, 4, 1, 4, 3005, 0)
 style_histo(hist_data, 1, 1, 0, 3001, 1, 20)
+if(systematic != ''):
+    style_histo(hist_systematics_up, 6, 2, 0, 1000, 0)
+    style_histo(hist_systematics_down, 6, 2, 0, 1000, 0)
 
 ################################################################################
 ## Save
 ################################################################################
 
-newfile = TFile(results_path(year,'stack',observable+'_groups.root'), 'RECREATE')
+if(systematic != ''):
+    result_name = results_path(year,'stack',observable+'_'+systematic+'_groups.root')
+else:
+    result_name = results_path(year,'stack',observable+'_groups.root')
+newfile = TFile(result_name, 'RECREATE')
 canvas.Update()
 canvas.Write()
 newfile.Close()
-canvas.SaveAs(results_path(year,'stack',observable+'_groups.png'))
+canvas.SaveAs(result_name)
 
 print ''
 print "Data : ", data_integral
 print "MC : ", mc_integral
-print "Ratio MC/DATA : ", percent(mc_integral,data_integral),'%'
+print "Ratio DATA/MC : ", percent(data_integral,mc_integral),'%'
+if(systematic != ''):
+    print "Systematic up : ", syst_up_integral
+    print "Systematic down : ", syst_down_integral
 print ''
 
 exit = raw_input("Press key to quit : ") 

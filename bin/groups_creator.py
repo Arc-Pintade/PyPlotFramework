@@ -9,24 +9,26 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('year', help='year of samples')
+parser.add_argument('nature', help='MC, SYST')
 
 args = parser.parse_args()
 year = args.year
+nature = args.nature
 
 ################################################################################
 # Variables
 ################################################################################
 
-variables = [
-    'm_dilep',
-    'n_bjets'
-]
-
 ################################################################################
 # Generate pure TH1 without fancy style 
 ################################################################################
 
-generate_MC_groups(year, variables, ttbar_list)
+if nature == 'MC':
+    generate_MC_groups(year, variables, ttbar_list)
+
+elif nature == 'SYST':
+    for syst in systematic_list :
+        generate_SYST_groups(year, variables, syst, ttbar_list)
 
 
 t_end = time.clock()

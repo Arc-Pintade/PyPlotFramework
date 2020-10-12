@@ -35,7 +35,6 @@ if(subtitle == ''):
 bin_values = observable_values(observable)[0]
 legend_coordinates = observable_values(observable)[1]
 
-withSystematics = False
 
 TH1.SetDefaultSumw2(1)
 hist_signal = TH1F("","", bin_values[0], bin_values[1], bin_values[2])

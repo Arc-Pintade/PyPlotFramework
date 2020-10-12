@@ -17,13 +17,19 @@ ttbar_list = [
     'zjets'
 ]
 
+variables = [
+    'm_dilep',
+    'n_bjets'
+]
+
 systematic_list = [
     'syst_elec_reco',
     'syst_elec_id',
-    'syst_muon_id',
-    'syst_muon_iso',
-    'syst_em_trig',
+#    'syst_muon_id',
+#    'syst_muon_iso',
+#    'syst_em_trig',
 ]
+
 
 luminosity = {
     '2016' : 35.9,
@@ -43,6 +49,9 @@ cross_sec = {
 sample_list_groups_2016 = 2#inputs_name('results', '2016', 'groups/MC')
 sample_list_groups_2017 = inputs_name('results', '2017', 'groups/MC')
 #
+sample_list_groups_SYST_2016 = 2#inputs_name('results', '2016', 'groups/MC')
+sample_list_groups_SYST_2017 = inputs_name('results', '2017', 'groups/SYST')
+#
 sample_list_MC_2016 = inputs_name('inputs', '2016', 'MC')
 sample_list_MC_2017 = inputs_name('inputs', '2017', 'MC')
 #sample_list_MC_2018 = inputs_name('inputs', '2018', 'MC')
@@ -53,6 +62,12 @@ sample_list_DATA_2017 = inputs_name('inputs', '2017', 'DATA')
 sample_list_groups = {
     '2016' : sample_list_groups_2016,
     '2017' : sample_list_groups_2017,
+    #'2018' :
+}
+
+sample_list_groups_SYST = {
+    '2016' : sample_list_groups_SYST_2016,
+    '2017' : sample_list_groups_SYST_2017,
     #'2018' :
 }
 
