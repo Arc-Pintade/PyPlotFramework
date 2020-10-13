@@ -46,10 +46,10 @@ cross_sec = {
 ################################################################################
 
 
-sample_list_groups_2016 = 2#inputs_name('results', '2016', 'groups/MC')
+sample_list_groups_2016 = inputs_name('results', '2016', 'groups/MC')
 sample_list_groups_2017 = inputs_name('results', '2017', 'groups/MC')
 #
-sample_list_groups_SYST_2016 = 2#inputs_name('results', '2016', 'groups/MC')
+sample_list_groups_SYST_2016 = inputs_name('results', '2016', 'groups/SYST')
 sample_list_groups_SYST_2017 = inputs_name('results', '2017', 'groups/SYST')
 #
 sample_list_MC_2016 = inputs_name('inputs', '2016', 'MC')
@@ -161,6 +161,10 @@ def generate_eventN0(year):
             foo[i] = foo[i-1]
             if is_same_sample(sample_list['MC'][year][i], sample_list['MC'][year][i-2]):
                 foo[i-2] = foo[i]
+            if is_same_sample(sample_list['MC'][year][i], sample_list['MC'][year][i-3]):
+                foo[i-3] = foo[i]
+                foo[i-2] = foo[i]
+
     return foo
 
 def percent(x, total):
@@ -186,7 +190,7 @@ effective_data_event = {
 
 
 events_N0 = {
-    '2016' : 0,
+    '2016' : generate_eventN0('2016'),
     '2017' : generate_eventN0('2017'),
     '2018' : 0
 }

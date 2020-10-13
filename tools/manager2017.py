@@ -8,31 +8,36 @@ def succeeds_job(percent):
     return 100./(percent)
 
 cross_sec_2017 = [
-    118.7,    # WW
-    47.13,    # WZ
-    16.523,   # ZZ 
-    89.05,    # dilep       
-    364.31,   # semilep     
-    380.11,   # hadronic    
-    10.32,    # STs         
-    10.32,    # STs2        
-    136.02,   # STt  
-    80.95,    # STt~ 
-    35.5,     # tW          
-    35.5,     # tW2         
-    35.5,     # tW~         
-    35.5,     # tw~2        
-    0.2043,   # TTW         
-    0.2043,   # TTW2        
-    0.4062,   # TTW3        
-    0.2529,   # TTZ         
-    0.2529,   # TTZ2        
-    0.5297,   # TTZ3        
-    0.4062,   # WJets       
-    0.4062,   # Wjets2      
-    6225.4,   # DY        
-    6225.4,   # DY2         
-    22635.1   # DY 10-50     
+    118.7,    # dibosons WW
+    47.13,    # dibosons WZ
+    16.523,   # dibosons ZZ 
+
+    89.05,    # signal dilep
+    380.11,   # signal hadronic
+    364.31,   # signal semilep
+
+    10.32,    # singletop STs
+    10.32,    # singletop STs2
+    80.95,    # singletop STt antitop
+    136.02,   # singletop STt top
+    35.5,     # singletop tW antitop
+    35.5,     # singletop tw2 antitop
+    35.5,     # singletop tW  top
+    35.5,     # singletop tW2 top
+
+    0.2043,   # TTX TTW         
+    0.2043,   # TTX TTW2        
+    0.4062,   # TTX TTW3        
+    0.2529,   # TTX TTZ         
+    0.2529,   # TTX TTZ2        
+    0.5297,   # TTX TTZ3        
+
+    0.4062,   # wjets WJets       
+    0.4062,   # wjets Wjets2      
+
+    6225.4,   # zjets DY        
+    6225.4,   # zjets DY2         
+    22635.1   # zjets DY 10-50     
 ]
 
 '''

@@ -56,6 +56,7 @@ canvas = TCanvas('stack_'+observable,'stack_'+observable, 1000, 800)
 rootfile_signal = TFile(results_path(year,'groups/MC',"signal_"+observable+".root"))
 hist_signal = rootfile_signal.Get('signal_'+observable)
 mc_integral += hist_signal.Integral()
+print 'signal', mc_integral
 
 # convenient variables
 nbin    = hist_signal.GetNbinsX()
@@ -74,6 +75,7 @@ for sample in sample_list_groups[year]:
         rootfile.append(TFile(results_path(year,'groups/MC',sample)))
         foo = rootfile[i].Get(hist_name)
         mc_integral += foo.Integral()
+        print sample, foo.Integral()
         hist_background.Add(foo)
         i += 1
 del rootfile
