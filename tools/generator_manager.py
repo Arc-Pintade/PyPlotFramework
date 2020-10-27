@@ -2,7 +2,7 @@ from directory_manager import *
 from sample_manager import *
 from tools.style_manager import *
 
-from multiprocessing import Pool
+import numpy as np
 
 from ROOT import TFile, TH1F
 
@@ -51,6 +51,26 @@ def generate_trigger(year, tree, hist, variable, file_name):
                     hist.Fill(tree.GetLeaf(variable).GetValue())
                     return
     return
+
+def generate_trigger_timed(year, tree, variable, file_name, nbin):
+    list = [ [ 0 for i in range(nbin)],[ 0 for i in range(nbin)] ]
+    if(trigger_passed(tree, triggers[year])):
+        if (file_name.find('MuonEG')!=-1):
+            bin_foo = int(np.floor(sideral_time(tree.GetLeaf('unix_time').GetValue())%nbin))
+            list[0][bin_foo] += tree.GetLeaf(variable).GetValue()
+            list[1][bin_foo] +=1
+            return list
+            if (file_name.find('SingleMuon')!=-1):
+                bin_foo = int(np.floor(sideral_time(tree.GetLeaf('unix_time').GetValue())%nbin))
+                list[0][bin_foo] += tree.GetLeaf(variable).GetValue()
+                list[1][bin_foo] +=1                
+                return list
+                if (file_name.find('SingleElectron')!=-1):
+                    bin_foo = int(np.floor(sideral_time(tree.GetLeaf('unix_time').GetValue())%nbin))
+                    list[0][bin_foo] += tree.GetLeaf(variable).GetValue()
+                    list[1][bin_foo] +=1
+                    return list
+    return list
 
 def read_DATA_variable(year, tree, variable, file_name):
     number = 0
@@ -185,6 +205,72 @@ def generate_SYST_groups(year, variables_list, systematic, analysis_list):
         for var_i, var in enumerate(variables_list):
             write(hist_syst_up[grp_i][var_i], var+'_'+systematic+'Up', year, 'groups', 'SYST', grp)
             write(hist_syst_down[grp_i][var_i], var+'_'+systematic+'Down', year, 'groups', 'SYST', grp)
+
+
+def generate_DATA_timed(variable, n_bin, year, nature, sample):
+    rfile = TFile(heppy_tree(year, nature, sample))
+    hist  = TH1F(variable+'_time'+str(n_bin), variable+'_time'+str(n_bin), n_bin, 0, n_bin)
+    tree  = rfile.Get('events')
+
+    content = [ [ 0 for i in range(n_bin)],[ 0 for i in range(n_bin)] ] 
+
+    #######################
+    for i in range(tree.GetEntriesFast()):
+        tree.GetEntry(i)
+
+        bin_foo = int(np.floor(sideral_time(tree.GetLeaf('unix_time').GetValue())%n_bin))        
+        if(trigger_passed(tree, triggers[year])):
+            if (sample.find('MuonEG')!=-1):
+                content[0][bin_foo] += tree.GetLeaf(variable).GetValue()
+                content[1][bin_foo] +=1
+                continue
+                if (sample.find('SingleMuon')!=-1):
+                    content[0][bin_foo] += tree.GetLeaf(variable).GetValue()
+                    content[1][bin_foo] +=1                
+                    continue
+                    if (sample.find('SingleElectron')!=-1):
+                        content[0][bin_foo] += tree.GetLeaf(variable).GetValue()
+                        content[1][bin_foo] +=1
+                        continue
+    print sample, content
+    total = 0
+    for i in range(n_bin):
+        if(content[0][i] != 0 and content[1][i] != 0 ):
+            hist.SetBinContent(i+1, content[0][i]/content[1][i])
+        else:
+            hist.SetBinContent(i+1, 0)
+        total += content[1][i]
+
+    hist.Scale(effective_data_event[year][index(year,sample,'DATA')])
+    ########################
+    file = open(results_path(year,'number_of_events','data.txt'),"a") 
+    file.write(sample+'   '+str(total)+'\n')
+    file.close()
+
+    write(hist, variable+'_time'+str(n_bin), year, 'TH1', 'DATA', sample)
+    rfile.Close()
+
+
+
+def generate_DATA_unrolled(variable, n_time, year, sample):
+    rfile = TFile(heppy_tree(year, 'DATA', sample))
+    binning = observable_values(variable)[0]
+    hist = []
+    for i in range(n_time):
+        hist.append(TH1F(variable+'_time'+str(n_time)+'_'+str(i), variable+'_time'+str(n_time)+'_'+str(i), binning[0], binning[1], binning[2]))
+    tree  = rfile.Get('events')
+    ########################
+    for i in range(tree.GetEntriesFast()):
+        tree.GetEntry(i)
+        ibin = int(np.floor(sideral_time(tree.GetLeaf('unix_time').GetValue())%n_time))
+        generate_trigger(year, tree, hist[ibin], variable, sample)
+    ########################
+    for i in range(n_time):
+        hist[i].Scale(effective_data_event[year][index(year,sample,'DATA')])
+        write(hist[i], variable+'_time'+str(n_time)+'_'+str(i), year, 'TH1', 'DATA/time', sample)
+    rfile.Close()
+
+
 
 
 def generate_TH1(variable, n_bin, bin_min, bin_max, 

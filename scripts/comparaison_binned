@@ -1,0 +1,9 @@
+#!/bin/bash 
+
+for i in $(seq 0 23);
+do
+    echo $i"/23"
+    python bin/comparaison_data_mc_combine.py m_dilep 2017 "mass dilep" results/2017/combine/one_bin/combine_m_dilep_24_${i}.root
+    python bin/comparaison_data_mc_combine.py n_bjets 2017 "mass dilep" results/2017/combine/one_bin/combine_n_bjets_24_${i}.root
+
+done

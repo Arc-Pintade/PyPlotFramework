@@ -8,6 +8,13 @@ from manager2017 import *
 ## Analysis values
 ################################################################################
 
+# constants
+omega_UT1  = 7.2921e-5
+omega_GMST = 7.2722e-5
+t0         = 1483228800.
+phase      = 3.2830
+
+
 ttbar_list = [ 
     'signal',
     'ttx',
@@ -19,15 +26,16 @@ ttbar_list = [
 
 variables = [
     'm_dilep',
-    'n_bjets'
+    'n_bjets',
+    'unix_time'
 ]
 
 systematic_list = [
     'syst_elec_reco',
     'syst_elec_id',
-#    'syst_muon_id',
-#    'syst_muon_iso',
-#    'syst_em_trig',
+    'syst_muon_id',
+    'syst_muon_iso',
+    'syst_em_trig',
 ]
 
 
@@ -117,6 +125,12 @@ sample_list = {
 ################################################################################
 # Utils
 ################################################################################
+
+## time ones
+
+def sideral_time(time_user):
+    return (omega_UT1 * (time_user - t0))/omega_GMST
+##
 
 def is_same_sample(name1, name2):
     foo = False;

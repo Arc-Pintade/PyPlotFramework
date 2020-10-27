@@ -1,0 +1,14 @@
+#!/bin/bash
+
+PATH_LYOSERV=/home/cms/acarle/combineAnalysis/CMSSW_8_1_0/src/TTbarTime/
+PATH_LOCAL=./results/$1/combine/
+
+####################
+#LOCAL_DIRECTORY=one_bin/
+LOCAL_DIRECTORY=unrolled/
+#LYOSERV_DIRECTORY=OneBin/inputs/
+LYOSERV_DIRECTORY=Unrolled/inputs/
+####################
+# rootfiles
+scp -r $PATH_LOCAL$LOCAL_DIRECTORY$2 acarle@lyoserv.in2p3.fr:$PATH_LYOSERV$LYOSERV_DIRECTORY 
+

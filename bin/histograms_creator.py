@@ -6,7 +6,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('year', help='year of samples')
-parser.add_argument('nature', help='DATA, MC, SYST')
+parser.add_argument('nature', help='DATA, MC, SYST, time')
 
 args = parser.parse_args()
 year = args.year
@@ -85,6 +85,19 @@ elif nature == "DATA":
         generate_TH1('m_dilep', 50, 0, 800, year, 'DATA', sample_list['DATA'][year][i])
         print '----'
          
+    print ''
+
+# DATA
+elif nature == "time":
+
+    os.system("rm "+results_path(year,'number_of_events','data.txt'))
+    nbin = int(raw_input("number of bin : "))
+    print 'Start Data'
+
+    for i in range(len(sample_list['DATA'][year])):
+        #generate_DATA_unrolled('m_dilep', nbin, year, sample_list['DATA'][year][i])
+        generate_DATA_unrolled('n_bjets', nbin, year, sample_list['DATA'][year][i])
+        print '----'
     print ''
 
 

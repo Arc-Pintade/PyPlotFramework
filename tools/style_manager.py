@@ -27,6 +27,10 @@ m_dilep_like_values = [
     [50, 0, 800],               # binnings
     [0.65, 0.65, 0.87, 0.87]    # legend box
 ]
+unix_time_like_values = [
+    [1, 0, 1],               # binnings
+    [0.65, 0.65, 0.87, 0.87]    # legend box
+]
 
 def observable_values(observable):
     if(observable.find('pt_') != -1): #changer ca
@@ -49,6 +53,8 @@ def observable_values(observable):
         return met_like_values
     elif(observable.find('m_dilep') != -1):
         return m_dilep_like_values
+    elif(observable.find('unix_time') != -1):
+        return unix_time_like_values
     else:
         print 'no drawing parameters'
 
